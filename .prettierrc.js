@@ -1,7 +1,9 @@
+/**
+ * @type {import('prettier').Config}
+ */
 module.exports = {
   arrowParens: 'avoid',
-  bracketSameLine: true,
-  bracketSpacing: false,
+  semi: false,
   singleQuote: true,
-  trailingComma: 'all',
-};
+  trailingComma: 'none'
+}
