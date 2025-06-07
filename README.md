@@ -26,10 +26,10 @@ With Metro running, open a new terminal window/pane from the root of your React 
 
 ```sh
 # Using npm
-npm run android
+npm run android -- --interactive
 
 # OR using Yarn
-yarn android
+yarn android --interactive
 ```
 
 ### iOS
@@ -52,10 +52,10 @@ For more information, please visit [CocoaPods Getting Started guide](https://gui
 
 ```sh
 # Using npm
-npm run ios
+npm run ios -- --simulator "TV"
 
 # OR using Yarn
-yarn ios
+yarn ios --simulator "TV"
 ```
 
 If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
