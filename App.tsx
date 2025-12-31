@@ -1,28 +1,38 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import { useRef, useState } from 'react';
+import { Button, StyleSheet, View } from 'react-native';
+import Video, { VideoRef } from 'react-native-video';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
+const uris = [
+  'https://www.w3schools.com/html/mov_bbb.mp4',
+  'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+];
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [currentUriIndex, setCurrentUriIndex] = useState(0);
+  const videoRef = useRef<VideoRef>(null);
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <NewAppScreen templateFileName="App.tsx" />
+      <Video
+        ref={videoRef}
+        source={{ uri: uris[currentUriIndex] }}
+        style={{ width: '100%', aspectRatio: 16 / 9 }}
+        controls
+        enterPictureInPictureOnLeave
+        onEnd={() => {
+          setCurrentUriIndex(
+            index => index + (index < uris.length - 1 ? 1 : 0),
+          );
+        }}
+      />
+      <Button
+        title="PiP"
+        onPress={() => videoRef.current?.enterPictureInPicture()}
+      />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+const styles = StyleSheet.create({ container: { flex: 1 } });
 
 export default App;
