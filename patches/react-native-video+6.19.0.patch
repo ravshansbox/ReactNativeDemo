@@ -1,0 +1,40 @@
+diff --git a/node_modules/react-native-video/ios/Video/RCTVideo.swift b/node_modules/react-native-video/ios/Video/RCTVideo.swift
+index 48c4df7..c126aef 100644
+--- a/node_modules/react-native-video/ios/Video/RCTVideo.swift
++++ b/node_modules/react-native-video/ios/Video/RCTVideo.swift
+@@ -556,7 +556,10 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
+             return
+         }
+ 
+-        _player?.pause()
++        _paused = false
++        if !isPictureInPictureActive() {
++            _player?.pause()
++        }
+         _playerItem = playerItem
+         _playerObserver.playerItem = _playerItem
+         setPreferredForwardBufferDuration(_preferredForwardBufferDuration)
+@@ -635,7 +638,9 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
+     func setSrc(_ source: NSDictionary!) {
+         if self.isSetSourceOngoing || self.nextSource != nil {
+             DebugLog("setSrc buffer request")
+-            self._player?.replaceCurrentItem(with: nil)
++            if !isPictureInPictureActive() {
++                self._player?.replaceCurrentItem(with: nil)
++            }
+             nextSource = source
+             return
+         }
+@@ -663,9 +668,10 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
+                 return
+             }
+ 
+-            // Ensure UI operations are performed on main thread
+             DispatchQueue.main.sync {
+-                self.removePlayerLayer()
++                if !self.isPictureInPictureActive() {
++                    self.removePlayerLayer()
++                }
+             }
+             self._playerObserver.player = nil
+             self._drmManager = nil
